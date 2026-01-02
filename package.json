@@ -1,0 +1,60 @@
+{
+  "name": "@eldrin-project/eldrin-app-vue",
+  "version": "0.0.1",
+  "description": "Vue adapter for Eldrin apps providing single-spa lifecycle and database composables",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "vue-tsc --noEmit",
+    "lint": "eslint src"
+  },
+  "keywords": [
+    "eldrin",
+    "vue",
+    "single-spa",
+    "cloudflare",
+    "d1"
+  ],
+  "author": "Eldrin Team",
+  "license": "MIT",
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
+  "dependencies": {
+    "@eldrin-project/eldrin-app-core": "^0.0.3",
+    "single-spa-vue": "^3.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20251216.0",
+    "@types/node": "^22.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.8.0",
+    "vue": "^3.5.0",
+    "vue-tsc": "^2.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
