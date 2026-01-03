@@ -1,6 +1,6 @@
 {
   "name": "@eldrin-project/eldrin-app-vue",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Vue adapter for Eldrin apps providing single-spa lifecycle and database composables",
   "publishConfig": {
     "access": "public"
