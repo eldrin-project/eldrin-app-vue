@@ -51,11 +51,22 @@ export function useMigrationsComplete(): boolean {
 
 /**
  * Get the global Eldrin context from the shell
+ *
+ * Non-reactive helper function for use outside Vue components.
+ *
+ * @returns The Eldrin global context or null if not available
+ */
+export function getEldrinGlobal(): EldrinGlobal | null {
+  const win = window as unknown as { __ELDRIN__?: EldrinGlobal };
+  return win.__ELDRIN__ ?? null;
+}
+
+/**
+ * Get the global Eldrin context from the shell (composable)
  * @returns The Eldrin global context or null if not available
  */
 export function useEldrinGlobal(): EldrinGlobal | null {
-  const win = window as unknown as { __ELDRIN__?: EldrinGlobal };
-  return win.__ELDRIN__ ?? null;
+  return getEldrinGlobal();
 }
 
 /**

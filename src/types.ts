@@ -51,12 +51,17 @@ export interface CreateAppOptions {
 }
 
 /**
+ * Single-spa lifecycle function type
+ */
+export type LifecycleFn<T = LifecycleProps> = (props: T) => Promise<void>;
+
+/**
  * Single-spa lifecycle functions
  */
-export interface AppLifecycle {
-  bootstrap: (props: LifecycleProps) => Promise<void>;
-  mount: (props: LifecycleProps) => Promise<void>;
-  unmount: (props: LifecycleProps) => Promise<void>;
+export interface AppLifecycle<T = LifecycleProps> {
+  bootstrap: LifecycleFn<T> | LifecycleFn<T>[];
+  mount: LifecycleFn<T> | LifecycleFn<T>[];
+  unmount: LifecycleFn<T> | LifecycleFn<T>[];
 }
 
 /**

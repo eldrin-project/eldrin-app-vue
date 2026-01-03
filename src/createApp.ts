@@ -11,6 +11,7 @@ import type {
   AppLifecycle,
   AppState,
   LifecycleProps,
+  LifecycleFn,
   DatabaseContext,
 } from './types';
 
@@ -129,5 +130,76 @@ export function createApp(options: CreateAppOptions): AppLifecycle {
     bootstrap,
     mount: vueLifecycles.mount,
     unmount: vueLifecycles.unmount,
+  };
+}
+
+/**
+ * Helper to run a lifecycle function (handles both single functions and arrays)
+ */
+async function runLifecycleFn<T>(
+  fn: LifecycleFn<T> | LifecycleFn<T>[],
+  props: T
+): Promise<void> {
+  if (Array.isArray(fn)) {
+    for (const f of fn) {
+      await f(props);
+    }
+  } else {
+    await fn(props);
+  }
+}
+
+/**
+ * Helper to combine Eldrin lifecycle with another single-spa lifecycle
+ *
+ * This is useful when you need more control over the Vue app setup,
+ * or when integrating with other single-spa wrappers.
+ *
+ * @example
+ * ```ts
+ * import { createApp, combineLifecycles } from '@eldrin-project/eldrin-app-vue';
+ * import singleSpaVue from 'single-spa-vue';
+ * import { createApp as createVueApp } from 'vue';
+ * import App from './App.vue';
+ * import migrations from './migrations';
+ *
+ * // Eldrin lifecycle for migrations
+ * const eldrinLifecycle = createApp({
+ *   name: 'my-app',
+ *   root: App,
+ *   migrations,
+ * });
+ *
+ * // Or combine with a custom Vue lifecycle
+ * const customVueLifecycle = singleSpaVue({
+ *   createApp: createVueApp,
+ *   appOptions: { ... },
+ * });
+ *
+ * export const { bootstrap, mount, unmount } = combineLifecycles(
+ *   eldrinLifecycle,
+ *   customVueLifecycle
+ * );
+ * ```
+ */
+export function combineLifecycles<T = LifecycleProps>(
+  eldrinLifecycle: AppLifecycle<T>,
+  vueLifecycle: AppLifecycle<T>
+): AppLifecycle<T> {
+  return {
+    bootstrap: async (props: T) => {
+      // Run Eldrin bootstrap first (migrations)
+      await runLifecycleFn(eldrinLifecycle.bootstrap, props);
+      // Then Vue bootstrap
+      await runLifecycleFn(vueLifecycle.bootstrap, props);
+    },
+    mount: async (props: T) => {
+      // Vue handles mounting
+      await runLifecycleFn(vueLifecycle.mount, props);
+    },
+    unmount: async (props: T) => {
+      // Vue handles unmounting
+      await runLifecycleFn(vueLifecycle.unmount, props);
+    },
   };
 }

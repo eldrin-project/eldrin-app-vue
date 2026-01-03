@@ -1,6 +1,6 @@
 {
   "name": "@eldrin-project/eldrin-app-vue",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Vue adapter for Eldrin apps providing single-spa lifecycle and database composables",
   "publishConfig": {
     "access": "public"
@@ -40,10 +40,10 @@
   "author": "Eldrin Team",
   "license": "MIT",
   "peerDependencies": {
-    "vue": "^3.4.0"
+    "vue": "^3.4.0 || ^3.5.0"
   },
   "dependencies": {
-    "@eldrin-project/eldrin-app-core": "^0.0.3",
+    "@eldrin-project/eldrin-app-core": "^0.0.5",
     "single-spa-vue": "^3.0.0"
   },
   "devDependencies": {

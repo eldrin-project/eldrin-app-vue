@@ -1,14 +1,15 @@
 /**
- * @eldrin-project/app-vue
+ * @eldrin-project/eldrin-app-vue
  *
  * Vue adapter for Eldrin apps providing:
  * - createApp() factory for single-spa lifecycle with migration support
+ * - combineLifecycles() for advanced lifecycle composition
  * - Vue composables for database access and auth
  *
  * @example
  * ```ts
  * // eldrin-my-app.ts (single-spa entry point)
- * import { createApp } from '@eldrin-project/app-vue';
+ * import { createApp } from '@eldrin-project/eldrin-app-vue';
  * import App from './App.vue';
  * import migrations from 'virtual:eldrin/migrations';
  *
@@ -23,7 +24,7 @@
  * ```vue
  * <!-- Component using composables -->
  * <script setup lang="ts">
- * import { useDatabase, useAuthHeaders } from '@eldrin-project/app-vue';
+ * import { useDatabase, useAuthHeaders } from '@eldrin-project/eldrin-app-vue';
  *
  * const db = useDatabase();
  * const authHeaders = useAuthHeaders();
@@ -38,7 +39,7 @@
  */
 
 // Lifecycle factory
-export { createApp } from './createApp';
+export { createApp, combineLifecycles } from './createApp';
 
 // Composables
 export {
@@ -47,6 +48,7 @@ export {
   useMigrationsComplete,
   useEldrinGlobal,
   useAuthHeaders,
+  getEldrinGlobal,
   DatabaseContextKey,
 } from './composables';
 
@@ -54,7 +56,9 @@ export {
 export type {
   CreateAppOptions,
   LifecycleProps,
+  LifecycleFn,
   AppLifecycle,
+  AppState,
   DatabaseContext,
   EldrinGlobal,
 } from './types';
